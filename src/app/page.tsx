@@ -1,7 +1,12 @@
-function Home() {
+import Button from "@/components/ui/Button";
+import { db } from "@/lib/db";
+
+async function Home() {
+  await db.set("hello", "world");
+
   return (
-    <div className="m-6 mx-auto w-fit rounded-xl border-[6px] border-primary p-5 text-4xl font-bold text-secondary">
-      Hello World!
+    <div className="m-6 mx-auto">
+      <Button>Button</Button>
     </div>
   );
 }

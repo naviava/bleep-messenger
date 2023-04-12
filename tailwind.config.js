@@ -8,8 +8,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // primary: "#351B4E", // Logo Dark purple
-        primary: "#7c1fd3",
+        primary: {
+          1: "#8d35e0",
+          2: "#7c1fd3",
+          3: "#351B4E",
+        },
         secondary: "#33d0f4",
       },
       // backgroundImage: {

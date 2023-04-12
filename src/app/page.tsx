@@ -1,6 +1,6 @@
 function Home() {
   return (
-    <div className="text-4xl font-bold text-secondary bg-primary w-fit m-6 p-5 rounded-lg mx-auto">
+    <div className="m-6 mx-auto w-fit rounded-xl border-[6px] border-primary p-5 text-4xl font-bold text-secondary">
       Hello World!
     </div>
   );

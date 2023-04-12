@@ -11,9 +11,11 @@ module.exports = {
         primary: {
           1: "#8d35e0",
           2: "#7c1fd3",
-          3: "#351B4E",
+          3: "#550d99",
+          4: "#3b0b68",
+          5: "#351B4E",
         },
-        secondary: "#33d0f4",
+        aqua: "#33d0f4",
       },
       // backgroundImage: {
       //   "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

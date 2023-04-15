@@ -23,7 +23,7 @@ const SidebarFriendRequests: React.FC<SidebarFriendRequestsProps> = ({
   return (
     <>
       <Link
-        href="/dashboards/requests"
+        href="/dashboard/requests"
         className="group flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-slate-300 transition hover:bg-gray-700 hover:text-primary-1"
       >
         <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-[0.625rem] font-medium text-gray-400 group-hover:text-primary-1">

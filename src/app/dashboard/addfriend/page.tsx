@@ -3,9 +3,9 @@ import AddFriendClient from "./AddFriendClient";
 
 const AddFriendPage = () => {
   return (
-    <section className="pt-8">
+    <main className="flex w-[80%] flex-col pt-8">
       <AddFriendClient />
-    </section>
+    </main>
   );
 };
 

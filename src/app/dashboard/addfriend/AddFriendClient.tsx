@@ -55,15 +55,12 @@ const AddFriendClient: React.FC<AddFriendClientProps> = ({}) => {
 
   return (
     <ClientOnly>
-      <h1 className="mb-8 text-5xl font-bold">Add a friend</h1>
+      <h1 className="mb-8 text-5xl font-bold text-slate-400">Add a friend</h1>
       <form
         onSubmit={handleSubmit(formSubmitHandler)}
-        className="mx-auto max-w-sm"
+        className="mt-5 max-w-sm p-5"
       >
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium leading-6 text-slate-400"
-        >
+        <label htmlFor="email" className="block text-sm font-medium leading-6">
           Add friend by E-Mail
         </label>
         <div className="mt-2 flex gap-4">

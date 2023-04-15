@@ -1,5 +1,3 @@
-"use client";
-
 // React and Next.
 import { ButtonHTMLAttributes } from "react";
 
@@ -14,8 +12,9 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary-5 text-white hover:bg-primary-4",
-        ghost: "bg-transparent text-primary-3 hover:bg-primary-1/20",
+        default:
+          "bg-transparent text-primary-1 hover:bg-primary-1/20 border-2 border-primary-2",
+        filled: "bg-primary-2 text-gray-800 hover:bg-primary-1",
       },
       size: {
         default: "h-10 py-2 px-4",

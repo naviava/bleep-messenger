@@ -1,22 +1,10 @@
-import { getServerSession } from "next-auth";
-import { signOut } from "next-auth/react";
-
-// Components.
-import ClientOnly from "@/components/ClientOnly";
-
 // Lib and utils.
-import { authOptions } from "@/lib/auth";
+import getSession from "@/helpers/getSession";
 
 const DashboardPage = async () => {
-  const session = await getServerSession(authOptions);
+  const session = await getSession();
 
-  console.log(session?.user);
-
-  return (
-    <>
-      <h1>{JSON.stringify(session)}</h1>
-    </>
-  );
+  return <div className="">DashboardPage</div>;
 };
 
 export default DashboardPage;

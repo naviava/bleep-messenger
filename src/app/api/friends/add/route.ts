@@ -1,12 +1,11 @@
 // External packages.
-import { getServerSession } from "next-auth";
 import { z } from "zod";
 
 // Lib and utils.
-import { authOptions } from "@/lib/auth";
 import { addFriendValidator } from "@/lib/validations/addFriend";
 import { fetchRedis } from "@/helpers/redis";
 import { db } from "@/lib/db";
+import getSession from "@/helpers/getSession";
 
 export async function POST(req: Request) {
   try {
@@ -18,7 +17,7 @@ export async function POST(req: Request) {
       `user:email:${emailToAdd}`
     )) as string;
 
-    const session = await getServerSession(authOptions);
+    const session = await getSession();
     if (!session) return new Response("Unauthorized", { status: 401 });
 
     if (idToAdd === session.user.id)

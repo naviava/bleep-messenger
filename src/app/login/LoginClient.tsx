@@ -1,7 +1,7 @@
 "use client";
 
 // React and Next.
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 // External packages.
 import { signIn } from "next-auth/react";
@@ -17,13 +17,13 @@ interface LoginClientProps {}
 const LoginClient: React.FC<LoginClientProps> = ({}) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  function handleGoogleLogin() {
+  const handleGoogleLogin = useCallback(() => {
     setIsLoading(true);
     signIn("google")
       .then(() => toast.success("Successfully logged in."))
       .catch(() => toast.error("Error logging in with Google."))
       .finally(() => setIsLoading(false));
-  }
+  }, []);
 
   return (
     <div className="flex w-full max-w-md flex-col items-center space-y-8">

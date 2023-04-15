@@ -1,17 +1,20 @@
-"use client";
-// Components.
-import ClientOnly from "@/components/ClientOnly";
+import { getServerSession } from "next-auth";
 import { signOut } from "next-auth/react";
 
-interface DashboardPageProps {}
+// Components.
+import ClientOnly from "@/components/ClientOnly";
 
-const DashboardPage: React.FC<DashboardPageProps> = ({}) => {
+// Lib and utils.
+import { authOptions } from "@/lib/auth";
+
+const DashboardPage = async () => {
+  const session = await getServerSession(authOptions);
+
+  console.log(session?.user);
+
   return (
     <>
-      <ClientOnly>
-        <div>Dashboard</div>
-      </ClientOnly>
-      <div onClick={() => signOut({ callbackUrl: "/login" })}>Logout</div>
+      <h1>{JSON.stringify(session)}</h1>
     </>
   );
 };

@@ -3,9 +3,9 @@ import { z } from "zod";
 
 // Lib and utils.
 import { addFriendValidator } from "@/lib/validations/addFriend";
-import { fetchRedis } from "@/helpers/redis";
+import { fetchRedis } from "@/utils/redis";
 import { db } from "@/lib/db";
-import getSession from "@/helpers/getSession";
+import getSession from "@/utils/getSession";
 
 export async function POST(req: Request) {
   try {

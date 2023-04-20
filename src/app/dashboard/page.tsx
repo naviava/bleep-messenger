@@ -1,5 +1,5 @@
 // Lib and utils.
-import getSession from "@/helpers/getSession";
+import getSession from "@/utils/getSession";
 
 const DashboardPage = async () => {
   const session = await getSession();

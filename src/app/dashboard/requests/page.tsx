@@ -5,8 +5,8 @@ import { notFound } from "next/navigation";
 import FriendRequestsClient from "./FriendRequestsClient";
 
 // Lib and utils.
-import getSession from "@/helpers/getSession";
-import { fetchRedis } from "@/helpers/redis";
+import getSession from "@/utils/getSession";
+import { fetchRedis } from "@/utils/redis";
 
 const FriendRequestsPage = async () => {
   const session = await getSession();

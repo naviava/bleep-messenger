@@ -20,7 +20,7 @@ const SignOutButton: React.FC<SignOutButtonProps> = ({ ...props }) => {
   const logoutHandler = useCallback(async () => {
     setIsLoggingOut(true);
     try {
-      await signOut({ callbackUrl: "/" });
+      await signOut();
     } catch (err: any) {
       toast.error("Couldn't log out");
     } finally {

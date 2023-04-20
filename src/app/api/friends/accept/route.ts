@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 import { db } from "@/lib/db";
-import getSession from "@/helpers/getSession";
-import { fetchRedis } from "@/helpers/redis";
+import getSession from "@/utils/getSession";
+import { fetchRedis } from "@/utils/redis";
 
 export async function POST(req: Request) {
   try {
@@ -44,7 +44,7 @@ export async function POST(req: Request) {
     return new Response("OK");
   } catch (err) {
     if (err instanceof z.ZodError)
-      return new Response("Inavlid request payload", { status: 422 });
+      return new Response("Invalid request payload", { status: 422 });
 
     return new Response("Invalid request", { status: 400 });
   }

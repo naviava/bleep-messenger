@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { db } from "@/lib/db";
-import getSession from "@/helpers/getSession";
+import getSession from "@/utils/getSession";
 
 export async function POST(req: Request) {
   try {

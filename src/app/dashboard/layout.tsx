@@ -6,8 +6,8 @@ import { notFound } from "next/navigation";
 import SidebarPanel from "@/components/sidebar/SidebarPanel";
 
 // Lib and utils.
-import getSession from "@/helpers/getSession";
-import { fetchRedis } from "@/helpers/redis";
+import getSession from "@/utils/getSession";
+import { fetchRedis } from "@/utils/redis";
 
 interface DashboardLayoutProps {
   children: ReactNode;

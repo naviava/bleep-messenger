@@ -8,6 +8,7 @@ import SidebarPanel from "@/components/sidebar/SidebarPanel";
 // Lib and utils.
 import getSession from "@/utils/getSession";
 import { fetchRedis } from "@/utils/redis";
+import getFriendsByUserId from "@/utils/getFriendsByUserId";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -16,6 +17,8 @@ interface DashboardLayoutProps {
 const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
   const session = await getSession();
   if (!session) notFound();
+
+  const friends = await getFriendsByUserId(session.user.id);
 
   const unseenFriendRequests = (
     (await fetchRedis(
@@ -30,6 +33,7 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
       <SidebarPanel
         session={session}
         unseenFriendRequests={unseenFriendRequests}
+        friends={friends}
       />
       {children}
     </div>

@@ -6,7 +6,7 @@ import { Session } from "next-auth";
 
 // Components.
 import BleeperLogo from "@/components/logos/BleeperLogo";
-import UserChatItem from "@/components/sidebar/UserChatItem";
+import ChatList from "@/components/sidebar/ChatList";
 import OverviewSection from "@/components/sidebar/OverviewSection";
 import SidebarFriendRequests from "@/components/sidebar/SidebarFriendRequests";
 import SidebarFooter from "@/components/sidebar/SidebarFooter";
@@ -14,11 +14,13 @@ import SidebarFooter from "@/components/sidebar/SidebarFooter";
 interface SidebarPanelProps {
   session: Session;
   unseenFriendRequests: number;
+  friends: User[];
 }
 
 const SidebarPanel: React.FC<SidebarPanelProps> = ({
   session,
   unseenFriendRequests,
+  friends,
 }) => {
   return (
     <div className="mr-10 flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-gray-800 px-6">
@@ -31,13 +33,15 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
         />
       </Link>
       {/* Main panel. */}
-      <div className="text-sm font-semibold leading-6 text-slate-500">
-        Your chats
-      </div>
+      {friends.length > 0 ? (
+        <div className="text-sm font-semibold leading-6 text-slate-500">
+          Your chats
+        </div>
+      ) : null}
       <nav className="flex flex-1 flex-col">
         <ul role="list" className="flex flex-1 flex-col gap-y-7">
           <li>
-            <UserChatItem />
+            <ChatList sessionId={session.user.id} friends={friends} />
           </li>
           <li>
             <OverviewSection />

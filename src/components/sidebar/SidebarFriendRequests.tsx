@@ -6,6 +6,7 @@ import Link from "next/link";
 
 // External packages.
 import { Users } from "lucide-react";
+import ClientOnly from "../ClientOnly";
 
 interface SidebarFriendRequestsProps {
   sessionId: string;
@@ -21,7 +22,7 @@ const SidebarFriendRequests: React.FC<SidebarFriendRequestsProps> = ({
   );
 
   return (
-    <>
+    <ClientOnly>
       <Link
         href="/dashboard/requests"
         className="group flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-slate-300 transition hover:bg-gray-700 hover:text-primary-1"
@@ -36,7 +37,7 @@ const SidebarFriendRequests: React.FC<SidebarFriendRequestsProps> = ({
           </div>
         )}
       </Link>
-    </>
+    </ClientOnly>
   );
 };
 

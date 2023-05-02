@@ -23,7 +23,7 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
   friends,
 }) => {
   return (
-    <div className="mr-10 flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-gray-800 px-6">
+    <div className="flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-gray-800 px-6">
       {/* Logo */}
       <Link href="/dashboard" className="mt-4 flex h-16 shrink-0 items-center">
         <BleeperLogo

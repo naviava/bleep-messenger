@@ -5,6 +5,8 @@ import getSession from "@/utils/getSession";
 import { fetchRedis } from "@/utils/redis";
 import { messageValidator } from "@/lib/validations/message";
 import { Message } from "@/lib/validations/message";
+import { pusherServer } from "@/lib/pusher";
+import { toPusherKey } from "@/lib/utils";
 
 export async function POST(req: Request) {
   try {
@@ -41,6 +43,13 @@ export async function POST(req: Request) {
     };
 
     const message = messageValidator.parse(messageData);
+
+    // Notify all connected clients.
+    pusherServer.trigger(
+      toPusherKey(`chat:${chatId}`),
+      "incoming_message",
+      message
+    );
 
     await db.zadd(`chat:${chatId}:messages`, {
       score: timestamp,

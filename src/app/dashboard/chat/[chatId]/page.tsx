@@ -40,6 +40,7 @@ const ChatPage = async ({ params }: ChatPageProps) => {
       <ChatHeader chatPartner={chatPartner} />
       <ChatMessages
         sessionId={session.user.id}
+        chatId={chatId}
         initialMessages={initialChatMessages}
         chatPartner={chatPartner}
         sessionImg={session.user.image}

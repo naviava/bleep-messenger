@@ -1,12 +1,16 @@
 "use client";
 
 // React and Next.
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 // External packages.
 import { Users } from "lucide-react";
 import ClientOnly from "../ClientOnly";
+
+// Lib and utils.
+import { pusherClient } from "@/lib/pusher";
+import { toPusherKey } from "@/lib/utils";
 
 interface SidebarFriendRequestsProps {
   sessionId: string;
@@ -20,6 +24,26 @@ const SidebarFriendRequests: React.FC<SidebarFriendRequestsProps> = ({
   const [unseenFriendRequests, setUnseenFriendRequests] = useState(
     initialUnseenFriendRequests
   );
+
+  useEffect(() => {
+    pusherClient.subscribe(
+      toPusherKey(`user:${sessionId}:incoming_friend_requests`)
+    );
+
+    const friendRequestHandler = () => {
+      setUnseenFriendRequests((prev) => prev + 1);
+    };
+
+    pusherClient.bind("incoming_friend_requests", friendRequestHandler);
+
+    // Cleanups.
+    return () => {
+      pusherClient.unsubscribe(
+        toPusherKey(`user:${sessionId}:incoming_friend_requests`)
+      );
+      pusherClient.unbind("incoming_friend_requests", friendRequestHandler);
+    };
+  }, [sessionId]);
 
   return (
     <ClientOnly>

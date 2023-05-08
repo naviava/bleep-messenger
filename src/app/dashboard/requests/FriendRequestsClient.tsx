@@ -1,7 +1,7 @@
 "use client";
 
 // React and Next.
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 // External packages.
@@ -9,6 +9,10 @@ import axios from "axios";
 
 // Components.
 import FriendRequestItem from "@/components/friendRequests/FriendRequestItem";
+
+// Lib and utils.
+import { pusherClient } from "@/lib/pusher";
+import { toPusherKey } from "@/lib/utils";
 
 interface FriendRequestsClientProps {
   sessionId: string;
@@ -21,6 +25,29 @@ const FriendRequestsClient: React.FC<FriendRequestsClientProps> = ({
 }) => {
   const router = useRouter();
   const [friendRequests, setFriendRequests] = useState(incomingFriendRequests);
+
+  useEffect(() => {
+    pusherClient.subscribe(
+      toPusherKey(`user:${sessionId}:incoming_friend_requests`)
+    );
+
+    const friendRequestHandler = ({
+      senderId,
+      senderEmail,
+    }: IncomingFriendRequest) => {
+      setFriendRequests((prev) => [...prev, { senderId, senderEmail }]);
+    };
+
+    pusherClient.bind("incoming_friend_requests", friendRequestHandler);
+
+    // Cleanups.
+    return () => {
+      pusherClient.unsubscribe(
+        toPusherKey(`user:${sessionId}:incoming_friend_requests`)
+      );
+      pusherClient.unbind("incoming_friend_requests", friendRequestHandler);
+    };
+  }, [sessionId]);
 
   const onAcceptFriendRequest = useCallback(
     async (senderId: string) => {

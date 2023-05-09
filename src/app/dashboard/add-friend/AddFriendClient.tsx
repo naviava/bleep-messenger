@@ -1,7 +1,7 @@
 "use client";
 
 // React and Next.
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 // External packages.
 import axios from "axios";
@@ -32,24 +32,27 @@ const AddFriendClient: React.FC<AddFriendClientProps> = ({}) => {
     resolver: zodResolver(addFriendValidator),
   });
 
-  const addFriendHandler = async (email: string) => {
-    try {
-      const validatedEmail = addFriendValidator.parse({ email });
+  const addFriendHandler = useCallback(
+    async (email: string) => {
+      try {
+        const validatedEmail = addFriendValidator.parse({ email });
 
-      await axios.post("/api/friends/add", { email: validatedEmail });
-      setShowSuccessState(true);
-    } catch (err: any) {
-      if (err instanceof z.ZodError) {
-        setError("email", { message: err.message });
-        return;
+        await axios.post("/api/friends/add", { email: validatedEmail });
+        setShowSuccessState(true);
+      } catch (err: any) {
+        if (err instanceof z.ZodError) {
+          setError("email", { message: err.message });
+          return;
+        }
+        if (err instanceof axios.AxiosError) {
+          setError("email", { message: err.response?.data });
+          return;
+        }
+        setError("email", { message: "Something went wrong" });
       }
-      if (err instanceof axios.AxiosError) {
-        setError("email", { message: err.response?.data });
-        return;
-      }
-      setError("email", { message: "Something went wrong" });
-    }
-  };
+    },
+    [setError]
+  );
 
   const formSubmitHandler = (data: FormData) => addFriendHandler(data.email);
 

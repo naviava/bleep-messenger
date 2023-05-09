@@ -19,15 +19,15 @@ export default withAuth(
     );
 
     // If user is already authenticated and trying to access login page, redirect to dashboard.
-    if (isLoginPage) {
-      if (isAuth) {
+    if (!!isLoginPage) {
+      if (!!isAuth) {
         return NextResponse.redirect(new URL("/dashboard", req.url));
       }
       // If user is not authenticated and trying to access sensitive route, redirect to login page.
       return NextResponse.next();
     }
 
-    if (!isAuth && isAccessingSensitiveRoute)
+    if (!isAuth && !!isAccessingSensitiveRoute)
       return NextResponse.redirect(new URL("/login", req.url));
 
     // If user is not logged in and accesses main page, redirect to login page.

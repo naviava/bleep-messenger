@@ -11,6 +11,7 @@ import { db } from "@/lib/db";
 import getSession from "@/utils/getSession";
 import getChatMessages from "@/lib/getChat";
 import ChatInput from "@/components/chatWindow/ChatInput";
+import { fetchRedis } from "@/utils/redis";
 
 interface ChatPageProps {
   params: {
@@ -32,7 +33,11 @@ const ChatPage = async ({ params }: ChatPageProps) => {
   if (userId1 !== user.id && userId2 !== user.id) notFound();
 
   const chatPartnerId = userId1 === user.id ? userId2 : userId1;
-  const chatPartner = (await db.get(`user:${chatPartnerId}`)) as User;
+  const chatPartnerRaw = (await fetchRedis(
+    "get",
+    `user:${chatPartnerId}`
+  )) as string;
+  const chatPartner = JSON.parse(chatPartnerRaw) as User;
   const initialChatMessages = await getChatMessages(chatId);
 
   return (

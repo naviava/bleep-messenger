@@ -1,3 +1,6 @@
+// React and Next.
+import { memo } from "react";
+
 // External packages.
 import { Check, UserPlus, X } from "lucide-react";
 
@@ -36,4 +39,4 @@ const FriendRequestItem: React.FC<FriendRequestItemProps> = ({
   );
 };
 
-export default FriendRequestItem;
+export default memo(FriendRequestItem);

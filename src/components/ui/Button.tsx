@@ -1,5 +1,5 @@
 // React and Next.
-import { ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, memo } from "react";
 
 // External packages.
 import { cva, VariantProps } from "class-variance-authority";
@@ -55,4 +55,4 @@ const Button: React.FC<ButtonProps> = ({
   );
 };
 
-export default Button;
+export default memo(Button);

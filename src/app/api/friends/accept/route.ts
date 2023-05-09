@@ -21,7 +21,7 @@ export async function POST(req: Request) {
       `user:${session.user.id}:friends`,
       idToAdd
     );
-    if (isAlreadyFriend)
+    if (!!isAlreadyFriend)
       return new Response("Already friends", { status: 400 });
 
     // Verify the user has a pending friend request.
@@ -33,21 +33,33 @@ export async function POST(req: Request) {
     if (!hasPendingRequest)
       return new Response("No pending request", { status: 400 });
 
+    const [userRaw, friendRaw] = (await Promise.all([
+      fetchRedis("get", `user:${session.user.id}`),
+      fetchRedis("get", `user:${idToAdd}`),
+    ])) as [string, string];
+
+    const user = JSON.parse(userRaw) as User;
+    const friend = JSON.parse(friendRaw) as User;
+
     // Add both users to each other's friend lists.
-    pusherServer.trigger(
-      toPusherKey(`user:${idToAdd}:friends`),
-      "new_friend",
-      {}
-    );
-
-    await db.sadd(`user:${session.user.id}:friends`, idToAdd);
-    await db.sadd(`user:${idToAdd}:friends`, session.user.id);
-
-    // Remove the pending friend request.
-    await db.srem(`user:${session.user.id}:incoming_friend_requests`, idToAdd);
-
-    // Functionality to show outgoing friend requests is not implemented yet.
-    // await db.srem(`user:${idToAdd}:outbound_friend_requests`, session.user.id);
+    await Promise.all([
+      pusherServer.trigger(
+        toPusherKey(`user:${idToAdd}:friends`),
+        "new_friend",
+        user
+      ),
+      pusherServer.trigger(
+        toPusherKey(`user:${session.user.id}:friends`),
+        "new_friend",
+        friend
+      ),
+      db.sadd(`user:${session.user.id}:friends`, idToAdd),
+      db.sadd(`user:${idToAdd}:friends`, session.user.id),
+      // Remove the pending friend request.
+      db.srem(`user:${session.user.id}:incoming_friend_requests`, idToAdd),
+      // Functionality to show outgoing friend requests is not implemented yet.
+      // await db.srem(`user:${idToAdd}:outbound_friend_requests`, session.user.id),
+    ]);
 
     return new Response("OK");
   } catch (err) {

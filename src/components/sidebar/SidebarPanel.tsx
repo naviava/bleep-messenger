@@ -33,11 +33,6 @@ const SidebarPanel: React.FC<SidebarPanelProps> = ({
         />
       </Link>
       {/* Main panel. */}
-      {friends.length > 0 ? (
-        <div className="text-sm font-semibold leading-6 text-slate-500">
-          Your chats
-        </div>
-      ) : null}
       <nav className="flex flex-1 flex-col">
         <ul role="list" className="flex flex-1 flex-col gap-y-7">
           <li>

@@ -1,7 +1,7 @@
 "use client";
 
 // React and Next.
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 // External packages.
 import axios from "axios";
@@ -22,7 +22,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ chatPartner, chatId }) => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const sendMessage = async () => {
+  const sendMessage = useCallback(async () => {
     if (!input) return;
 
     setIsLoading(true);
@@ -35,7 +35,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ chatPartner, chatId }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [chatId, input]);
 
   return (
     <ClientOnly>

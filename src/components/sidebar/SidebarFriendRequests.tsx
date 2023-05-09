@@ -29,21 +29,28 @@ const SidebarFriendRequests: React.FC<SidebarFriendRequestsProps> = ({
     pusherClient.subscribe(
       toPusherKey(`user:${sessionId}:incoming_friend_requests`)
     );
+    pusherClient.subscribe(toPusherKey(`user:${sessionId}:friends`));
 
-    const friendRequestHandler = () => {
+    const friendRequestHandler = () =>
       setUnseenFriendRequests((prev) => prev + 1);
+
+    const addedFriendHandler = () => {
+      if (unseenFriendRequests > 0) setUnseenFriendRequests((prev) => prev - 1);
     };
 
     pusherClient.bind("incoming_friend_requests", friendRequestHandler);
+    pusherClient.bind("new_friend", addedFriendHandler);
 
     // Cleanups.
     return () => {
       pusherClient.unsubscribe(
         toPusherKey(`user:${sessionId}:incoming_friend_requests`)
       );
+      pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:friends`));
       pusherClient.unbind("incoming_friend_requests", friendRequestHandler);
+      pusherClient.unbind("new_friend", addedFriendHandler);
     };
-  }, [sessionId]);
+  }, [sessionId, unseenFriendRequests]);
 
   return (
     <ClientOnly>

@@ -3,6 +3,8 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import getSession from "@/utils/getSession";
 import { fetchRedis } from "@/utils/redis";
+import { pusherServer } from "@/lib/pusher";
+import { toPusherKey } from "@/lib/utils";
 
 export async function POST(req: Request) {
   try {
@@ -32,6 +34,12 @@ export async function POST(req: Request) {
       return new Response("No pending request", { status: 400 });
 
     // Add both users to each other's friend lists.
+    pusherServer.trigger(
+      toPusherKey(`user:${idToAdd}:friends`),
+      "new_friend",
+      {}
+    );
+
     await db.sadd(`user:${session.user.id}:friends`, idToAdd);
     await db.sadd(`user:${idToAdd}:friends`, session.user.id);
 

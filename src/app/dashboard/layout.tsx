@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { notFound } from "next/navigation";
 
 // Components.
+import MobileChatLayout from "@/components/MobileChatLayout";
 import SidebarPanel from "@/components/sidebar/SidebarPanel";
 
 // Lib and utils.
@@ -30,11 +31,20 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
   return (
     // Main sidebar container.
     <div className="flex h-screen w-full">
-      <SidebarPanel
-        session={session}
-        unseenFriendRequests={unseenFriendRequests}
-        friends={friends}
-      />
+      <div className="md:hidden">
+        <MobileChatLayout
+          session={session}
+          unseenFriendRequests={unseenFriendRequests}
+          friends={friends}
+        />
+      </div>
+      <div className="hidden md:block">
+        <SidebarPanel
+          session={session}
+          unseenFriendRequests={unseenFriendRequests}
+          friends={friends}
+        />
+      </div>
       <aside className="container max-h-screen w-full py-16 md:py-12">
         {children}
       </aside>

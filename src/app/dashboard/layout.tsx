@@ -35,7 +35,9 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
         unseenFriendRequests={unseenFriendRequests}
         friends={friends}
       />
-      {children}
+      <aside className="container max-h-screen w-full py-16 md:py-12">
+        {children}
+      </aside>
     </div>
   );
 };

@@ -4,9 +4,21 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
-// Lib and utils.
-import { chatHrefConstructor } from "@/lib/utils";
+// External packages.
+import { toast } from "react-hot-toast";
+
+// Components.
 import ClientOnly from "../ClientOnly";
+import UnseenChatToast from "../chatWindow/UnseenChatToast";
+
+// Lib and utils.
+import { chatHrefConstructor, toPusherKey } from "@/lib/utils";
+import { pusherClient } from "@/lib/pusher";
+
+interface ExtendedMessage extends Message {
+  senderImg: string;
+  senderName: string;
+}
 
 interface ChatListProps {
   sessionId: string;
@@ -17,6 +29,48 @@ const ChatList: React.FC<ChatListProps> = ({ sessionId, friends }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [unseenMessages, setUnseenMessages] = useState<Message[]>([]);
+
+  useEffect(() => {
+    pusherClient.subscribe(toPusherKey(`user:${sessionId}:chats`));
+    pusherClient.subscribe(toPusherKey(`user:${sessionId}:friends`));
+
+    const newFriendHandler = () => {
+      router.refresh();
+    };
+
+    const chatHandler = (message: ExtendedMessage) => {
+      const shouldNotify =
+        pathname !==
+        `/dashboard/chat/${chatHrefConstructor(sessionId, message.senderId)}`;
+
+      // If the message is from the current chat, don't notify.
+      if (!shouldNotify) return;
+
+      // If the message is from a different chat, notify.
+      toast.custom((t) => (
+        <UnseenChatToast
+          t={t}
+          sessionId={sessionId}
+          senderId={message.senderId}
+          senderImg={message.senderImg}
+          senderName={message.senderName}
+          senderMessage={message.text}
+        />
+      ));
+
+      setUnseenMessages((prev) => [...prev, message]);
+    };
+
+    pusherClient.bind("new_message", chatHandler);
+    pusherClient.bind("new_friend", newFriendHandler);
+
+    return () => {
+      pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:chats`));
+      pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:friends`));
+      pusherClient.unbind("new_message", chatHandler);
+      pusherClient.unbind("new_friend", newFriendHandler);
+    };
+  }, [pathname, router, sessionId]);
 
   useEffect(() => {
     if (pathname?.includes("chat"))

@@ -83,7 +83,7 @@ const ChatList: React.FC<ChatListProps> = ({ sessionId, friends }) => {
   return (
     <ClientOnly>
       <ul role="list" className="max-h-[25rem] space-y-1 overflow-y-auto">
-        {friends.length > 0 ? (
+        {activeChats.length > 0 ? (
           <div className="text-sm font-semibold leading-6 text-slate-500">
             Your chats
           </div>
